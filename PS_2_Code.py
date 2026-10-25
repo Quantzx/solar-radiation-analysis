@@ -51,14 +51,13 @@ ax[0].set_ylabel("Solar Radiation")
 ax[0].set_title(f"Radiation vs Temperature on {m}/{d}/2016", fontsize = 15, fontweight = "bold", color = "Black")
 ax[0].legend()
 
-# 2. Radiation vs Humidity
+
 ax[1].scatter(h, y, s=4)
 ax[1].set_xlabel("Humidity")
 ax[1].set_ylabel("Solar Radiation")
 ax[1].set_title(f"Radiation vs Humidity on {m}/{d}/2016", fontsize = 15, fontweight = "bold", color = "Black")
 ax[1].legend()
 
-# 3. Radiation vs Date and Time
 ax[2].plot(i, y, color="purple", linewidth=1)
 ax[2].axhline(X, color="green", linestyle="--",
               label="Overall Average")
@@ -75,16 +74,13 @@ plt.show()
 
 
 
-# Convert Time to a consistent datetime-like time-of-day
 df["HourMinute"] = pd.to_datetime(
     df["Time"].astype(str),
     format="%H:%M:%S",
     errors="coerce"
 )
-# Get several dates from the dataset
 dates = sorted(df["DateTime"].dt.date.unique())
 
-# Select up to 5 evenly spaced dates across the dataset
 if len(dates) > 5:
     indices = np.linspace(0, len(dates) - 1, 5, dtype=int)
     selected_dates = [dates[j] for j in indices]
@@ -97,7 +93,6 @@ for date in selected_dates:
     day_data = df[df["DateTime"].dt.date == date].copy()
     day_data = day_data.sort_values("DateTime")
 
-    # Convert time to decimal hours for correct chronological plotting
     time_hours = (
         day_data["DateTime"].dt.hour
         + day_data["DateTime"].dt.minute / 60
@@ -147,7 +142,6 @@ print("\nHour with highest average radiation:",
 print("Highest hourly average radiation:",
       round(hourly_radiation.max(), 2))
 
-# Visualise the pattern
 plt.figure(figsize=(10, 5))
 plt.plot(hourly_radiation.index, hourly_radiation.values,
          marker="o", linewidth=2)
@@ -338,7 +332,6 @@ importance = importance.sort_values(
     ascending=False
 )
 print("\nFEATURE IMPORTANCE")
-print("------------------")
 print(importance.to_string(index=False))
 plt.figure(figsize=(9, 6))
 plt.barh(
